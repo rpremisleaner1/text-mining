@@ -12,28 +12,30 @@ import pandas as pd
 import plotnine
 from plotnine import * # visualization like ggplot
 from imdb import Cinemagoer
+import nltk
+# nltk.download('vader_lexicon') # This is needed to run the sentiment analyis
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 instance = imdb.Cinemagoer()
 
-# movie_1_name = "War Dogs"
+movie_1_name = "War Dogs"
 # movie_2_name = "21 Jump Street"
 # movie_3_name = "Moneyball"
 
-# movie_1 = instance.search_movie(movie_1_name)[0]
+movie_1 = instance.search_movie(movie_1_name)[0]
 # movie_2 = instance.search_movie(movie_2_name)[0]
 # movie_3 = instance.search_movie(movie_3_name)[0]
 
-# print(movie_1.movieID)  # ID is 2005151
+print(movie_1.movieID)  # ID is 2005151
 # print(movie_2.movieID)  # ID is 1232829
 # print(movie_3.movieID)  # ID is 1210166
 
-# movie_1_id = movie_1.movieID
+movie_1_id = movie_1.movieID
 # movie_2_id = movie_2.movieID
 # movie_3_id = movie_3.movieID
 
-# print(movie_1_id)
+print(movie_1_id)
 
-# print(movie_reviews['data']['reviews'][0]['content']) # check 'rating' as well
 # print(movie_reviews['data']['reviews'][1]['content']) # transforming into a list
 
 
@@ -53,7 +55,8 @@ def list_reviews(movie_id, num_reviews):
 # print(list_reviews(movie_3_id, 5))
 
 
-# listed_review_1 = list_reviews(movie_1_id, 5)
+listed_review_1 = list_reviews(movie_1_id, 5)
+# print(list_reviews(movie_1_id, 5))
 # listed_review_2 = list_reviews(movie_2_id, 5)
 # listed_review_3 = list_reviews(movie_3_id, 5)
 
@@ -156,6 +159,22 @@ def most_common(sorted_dictionary, k_words, excluding_stopwords=False):
 # + scale_y_continuous(minor_breaks = NULL)
 # + labs(x = '', y = '', title = 'Frequency of Word (Y) vs. Word Name (X) by Movie Name (Colors) and Movie Name (Facets)')
 # + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
+
+def analyze_sentiment(listed_review):
+    lst = []
+    for line in range(len(listed_review)):
+        line = listed_review[line]
+        score = SentimentIntensityAnalyzer().polarity_scores(line)
+        for key, value in score.items():
+            lst.append((key, value))
+    return lst
+
+sentiment_list = analyze_sentiment(listed_review_1)
+# print(analyze_sentiment(listed_review_1))
+
+sentiment_df = pd.DataFrame(sentiment_list, columns = ['sentiment', 'value'])
+sentiment_df['movie_name'] = movie_1_name
+print(sentiment_df)
 
 
 def main():
