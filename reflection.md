@@ -14,4 +14,4 @@ With regards to the second goal, the process was relatively similar. Since I had
 
 ## Results
 
-(images/Figure_1_text_mining.png)
+![results](images/Figure_1_text_mining.png)
