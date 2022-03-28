@@ -18,6 +18,10 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 instance = imdb.Cinemagoer()
 
+"""
+The following chunk of code 
+"""
+
 # movie_1_name = "War Dogs"
 # movie_2_name = "21 Jump Street"
 # movie_3_name = "Moneyball"
