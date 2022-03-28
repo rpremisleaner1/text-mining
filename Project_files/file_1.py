@@ -1,7 +1,7 @@
 # Imports
 """
-To begin this project, we must first install the libraries required.
-Since I am using cinemagoer, I ran "pip install cinemagoer"
+To begin this project, we must first install the packages required.
+Since I am using cinemagoer, I ran "pip install cinemagoer." I do the same for the other packages, such as nltk, pandas, plotnine, etc.
 """
 
 from asyncio.windows_events import NULL
@@ -188,7 +188,6 @@ def analyze_sentiment(listed_review):
 # print(full_sentiment_df)
 
 # https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07
-
 
 # full_sentiment_df_aggregated = full_sentiment_df.groupby(['movie_name', 'sentiment']).mean().reset_index()
 # print(full_sentiment_df_aggregated)
