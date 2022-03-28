@@ -246,7 +246,7 @@ def main():
     + geom_bar(stat = 'identity') 
     + theme(legend_position = 'bottom', legend_title = element_blank())
     + scale_y_continuous(minor_breaks = NULL)
-    + labs(x = '', y = '', title = 'Frequency of Word (Y) vs. Word Name (X) by Movie Name (Colors) and Movie Name (Facets)')
+    + labs(x = '', y = '', title = 'Graph 1: Frequency of Word (Y) vs. Word Name (X) by Movie Name (Colors) and Movie Name (Facets)')
     + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
 
     sentiment_list_1 = analyze_sentiment(listed_review_1)
@@ -271,7 +271,7 @@ def main():
     + geom_bar(stat = 'identity') 
     + theme(legend_position = 'bottom', legend_title = element_blank())
     + scale_y_continuous(minor_breaks = NULL)
-    + labs(x = '', y = '', title = 'Mean Sentiment Value (Y) vs. Sentiment Kind (X) by Sentiment Kind (Colors) and Movie Name (Facets)')
+    + labs(x = '', y = '', title = 'Graph 2: Mean Sentiment Value (Y) vs. Sentiment Kind (X) by Sentiment Kind (Colors) and Movie Name (Facets)')
     + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
 
 
