@@ -14,4 +14,10 @@ With regards to the second goal, the process was relatively similar. Since I had
 
 ## Results
 
+The first part of the text analysis was the histogram of word counts. I had initially hoped that, conditional on removing stopwords, the words used most frequently in reviews would be useful in providing information related to critic's perspectives. Nonetheless, the most frequent words were mostly related to the actors' names and the movie titles. For instance, the most frequent words used on Moneyball were "Pitt", "Baseball", "film", and "sports" which are obvious words given the movie title and actors. This may pose an obvious question: why not simply also remove those words and see what results can be derived after doing so? It just so happens that these most frequent words were also not used that extensively -- they amount to only being used around 10 times for 21 Jump Street and Moneyball, and just five times for War Dogs, on average. 
+
 ![results](images/Figure_1_text_mining.png)
+
+Given the poorly informative results of the histogram, I decided to estimate the polarity scores using the nltk package. Perhaps as expected, these were much more informative.
+
+![results](images/Figure_2_text_mining.png)
