@@ -19,7 +19,8 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 instance = imdb.Cinemagoer()
 
 """
-The following chunk of code 
+The purpose of this first part of the project is to gather reviews from movies starred by my favorite actor, Jonah Hill, and do a few analysis regarding its reviews.
+To do this, I begin by specifying three of my favorite movies and searching for their respective movie IDs on cinemagoer
 """
 
 # movie_1_name = "War Dogs"
@@ -42,6 +43,9 @@ The following chunk of code
 
 # print(movie_reviews['data']['reviews'][1]['content']) # transforming into a list
 
+"""
+The following chunk of code retrieves information from the top N ratings of the movies specified.
+"""
 
 def list_reviews(movie_id, num_reviews):
     """
@@ -58,13 +62,18 @@ def list_reviews(movie_id, num_reviews):
 # print(list_reviews(movie_2_id, 5))
 # print(list_reviews(movie_3_id, 5))
 
-
+"""
+Since the list_reviews() function returns a list of words in each of the ratings, I then create a function that returns a dictionary of words and their frequencies
+"""
 # listed_review_1 = list_reviews(movie_1_id, 5)
 # # print(list_reviews(movie_1_id, 5))
 # listed_review_2 = list_reviews(movie_2_id, 5)
 # listed_review_3 = list_reviews(movie_3_id, 5)
 
 def create_dict(listed_review):
+    """
+    Returns a dictionary mapping words and their respective frequencies, given a list of reviews.
+    """
     res = {}
     for line in range(len(listed_review)):
         line = listed_review[line]
@@ -78,8 +87,13 @@ def create_dict(listed_review):
 # dict_object_2 = create_dict(listed_review_2)
 # dict_object_3 = create_dict(listed_review_3)
 
-
+"""
+I eventually wanted to create a dictionary that is sort word:frquency pairs from high to low. For that, I create a function called create_sorted_dict()
+"""
 def create_sorted_dict(a_dict):
+    """
+    Returns a dictionary of sorted word:frequency pairs given a dictionary.
+    """
     sorted_keys = sorted(a_dict, key=a_dict.get, reverse=True)
     sorted_dict = {}
     for key in sorted_keys:
@@ -92,6 +106,10 @@ def create_sorted_dict(a_dict):
 # sorted_dict_2 = create_sorted_dict(dict_object_2)
 # sorted_dict_3 = create_sorted_dict(dict_object_3)
 
+"""
+Now given a dictionary that is already sorted, I only need to select the top N words that I want in order to create a visualization. Nonetheless, many frequently used words would be considered stopwords.
+Due to this problem, I import the stopwords.txt file and exclude the stopwords from the dictionary/histogram 
+"""
 
 def process_file(filename):
     """Makes a histogram that contains the words from a file.
@@ -124,6 +142,9 @@ def process_file(filename):
 
 
 def most_common(sorted_dictionary, k_words, excluding_stopwords=False):
+    """
+    Returns a final list of word:frequency pairs, which may exclude stopwords if specified by the user. The function is also parametrized by a sorted_dictionary, and a number of k words (k_words) to keep
+    """
     stopwords = process_file('data/stopwords.txt')
     lst = []
     for word, freq in sorted_dictionary.items():
@@ -137,6 +158,11 @@ def most_common(sorted_dictionary, k_words, excluding_stopwords=False):
 # most_common_list_1 = most_common(sorted_dict_1, 5, True)
 # most_common_list_2 = most_common(sorted_dict_2, 5, True)
 # most_common_list_3 = most_common(sorted_dict_3, 5, True)
+
+"""
+I now have the data needed to create the final visualizations. However, There are times for which I want to calculate statistics, such as the mean for a certain sentiment, that requires the use of pandas.
+To do that, I transform the final list into a pandas dataframe and merge the data from different movies into a single dataframe
+"""
 
 # df_1 = pd.DataFrame(most_common_list_1, columns = ['frequency', 'word']) # Source: https://www.geeksforgeeks.org/create-a-pandas-dataframe-from-lists/
 # df_1['movie_name'] = movie_1_name
@@ -156,6 +182,10 @@ def most_common(sorted_dictionary, k_words, excluding_stopwords=False):
 # print(df_3)
 # print(full_df)
 
+"""
+After all this work, I am now ready to create my visualizations. I choose to use a Python library called plotnine which closely resembles both the syntax and output of GGplot, an R library that is famous for data visualization.
+I first choose to create an (unordered) bar chart of the most common words in the movie reviews, colored by the respective movie names. 
+"""
 
 # print((ggplot(full_df, aes(y = 'frequency', x = 'word', fill = 'movie_name', color = 'movie_name')) # https://plotnine.readthedocs.io/en/stable/
 # + geom_bar(stat = 'identity') 
@@ -164,7 +194,17 @@ def most_common(sorted_dictionary, k_words, excluding_stopwords=False):
 # + labs(x = '', y = '', title = 'Frequency of Word (Y) vs. Word Name (X) by Movie Name (Colors) and Movie Name (Facets)')
 # + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
 
+
+"""
+A closer look at the visualizations yields the conclusion that it is not very informative. In fact, most of the words displayed are simply the author's names or words in the movie title.
+Therefore, I choose to conduct a sentiment analysis on each of the reviews and see what I can infer from that. 
+"""
+
 def analyze_sentiment(listed_review):
+    """
+    This function takes a list of reviews and uses the SentimentIntensityAnalyzer function from nltk to derive sentiment scores for each of the reviews being analyzed. It requires that the user
+    specifies a review in list format, as done in previous lines of code.
+    """
     lst = []
     for line in range(len(listed_review)):
         line = listed_review[line]
@@ -173,6 +213,9 @@ def analyze_sentiment(listed_review):
             lst.append((key, value))
     return lst
 
+"""
+Similar to what was done before with the other dataframes, I convert the lists to dataframes in order to plot them later. Dataframes are combined into the full_sentiment_df for plotting.
+"""
 # sentiment_list_1 = analyze_sentiment(listed_review_1)
 # sentiment_list_2 = analyze_sentiment(listed_review_2)
 # sentiment_list_3 = analyze_sentiment(listed_review_3)
@@ -191,12 +234,17 @@ def analyze_sentiment(listed_review):
 
 # print(full_sentiment_df)
 
-# https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07
+# https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07 # Source used to understand differences between R's dplyr and the manipulation of Pandas dataframes
 
+"""
+The following chunk of code calculates the mean score for each of the sentiment values given in the polarity scores output.
+The mean values are then used to create a graph with the mean values on the Y axis, sentiment categories on the X axis, colored by the sentiment categories and faceted by each of the Movie Names  
+"""
 # full_sentiment_df_aggregated = full_sentiment_df.groupby(['movie_name', 'sentiment']).mean().reset_index()
 # print(full_sentiment_df_aggregated)
 
-# print((ggplot(full_sentiment_df_aggregated, aes(y = 'value', x = 'sentiment', fill = 'sentiment', color = 'sentiment')) # https://plotnine.readthedocs.io/en/stable/
+# https://plotnine.readthedocs.io/en/stable/ # Source used to understand how plotnine library works
+# print((ggplot(full_sentiment_df_aggregated, aes(y = 'value', x = 'sentiment', fill = 'sentiment', color = 'sentiment')) 
 # + geom_bar(stat = 'identity') 
 # + theme(legend_position = 'bottom', legend_title = element_blank())
 # + scale_y_continuous(minor_breaks = NULL)
