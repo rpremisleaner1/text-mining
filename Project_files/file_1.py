@@ -18,23 +18,23 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 instance = imdb.Cinemagoer()
 
-movie_1_name = "War Dogs"
+# movie_1_name = "War Dogs"
 # movie_2_name = "21 Jump Street"
 # movie_3_name = "Moneyball"
 
-movie_1 = instance.search_movie(movie_1_name)[0]
+# movie_1 = instance.search_movie(movie_1_name)[0]
 # movie_2 = instance.search_movie(movie_2_name)[0]
 # movie_3 = instance.search_movie(movie_3_name)[0]
 
-print(movie_1.movieID)  # ID is 2005151
+# print(movie_1.movieID)  # ID is 2005151
 # print(movie_2.movieID)  # ID is 1232829
 # print(movie_3.movieID)  # ID is 1210166
 
-movie_1_id = movie_1.movieID
+# movie_1_id = movie_1.movieID
 # movie_2_id = movie_2.movieID
 # movie_3_id = movie_3.movieID
 
-print(movie_1_id)
+# print(movie_1_id)
 
 # print(movie_reviews['data']['reviews'][1]['content']) # transforming into a list
 
@@ -55,8 +55,8 @@ def list_reviews(movie_id, num_reviews):
 # print(list_reviews(movie_3_id, 5))
 
 
-listed_review_1 = list_reviews(movie_1_id, 5)
-# print(list_reviews(movie_1_id, 5))
+# listed_review_1 = list_reviews(movie_1_id, 5)
+# # print(list_reviews(movie_1_id, 5))
 # listed_review_2 = list_reviews(movie_2_id, 5)
 # listed_review_3 = list_reviews(movie_3_id, 5)
 
@@ -169,12 +169,36 @@ def analyze_sentiment(listed_review):
             lst.append((key, value))
     return lst
 
-sentiment_list = analyze_sentiment(listed_review_1)
-# print(analyze_sentiment(listed_review_1))
+# sentiment_list_1 = analyze_sentiment(listed_review_1)
+# sentiment_list_2 = analyze_sentiment(listed_review_2)
+# sentiment_list_3 = analyze_sentiment(listed_review_3)
 
-sentiment_df = pd.DataFrame(sentiment_list, columns = ['sentiment', 'value'])
-sentiment_df['movie_name'] = movie_1_name
-print(sentiment_df)
+# sentiment_df_1 = pd.DataFrame(sentiment_list_1, columns = ['sentiment', 'value'])
+# sentiment_df_1['movie_name'] = movie_1_name
+
+# sentiment_df_2 = pd.DataFrame(sentiment_list_2, columns = ['sentiment', 'value'])
+# sentiment_df_2['movie_name'] = movie_2_name
+
+# sentiment_df_3 = pd.DataFrame(sentiment_list_3, columns = ['sentiment', 'value'])
+# sentiment_df_3['movie_name'] = movie_3_name
+
+# intermediate_sentiment_df = sentiment_df_1.append(sentiment_df_2, ignore_index = True)
+# full_sentiment_df = intermediate_sentiment_df.append(sentiment_df_3, ignore_index = True)
+
+# print(full_sentiment_df)
+
+# https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07
+
+
+# full_sentiment_df_aggregated = full_sentiment_df.groupby(['movie_name', 'sentiment']).mean().reset_index()
+# print(full_sentiment_df_aggregated)
+
+# print((ggplot(full_sentiment_df_aggregated, aes(y = 'value', x = 'sentiment', fill = 'sentiment', color = 'sentiment')) # https://plotnine.readthedocs.io/en/stable/
+# + geom_bar(stat = 'identity') 
+# + theme(legend_position = 'bottom', legend_title = element_blank())
+# + scale_y_continuous(minor_breaks = NULL)
+# + labs(x = '', y = '', title = 'Mean Sentiment Value (Y) vs. Sentiment Kind (X) by Sentiment Kind (Colors) and Movie Name (Facets)')
+# + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
 
 
 def main():
@@ -225,5 +249,32 @@ def main():
     + labs(x = '', y = '', title = 'Frequency of Word (Y) vs. Word Name (X) by Movie Name (Colors) and Movie Name (Facets)')
     + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
 
-# if __name__ == "__main__":
-#     main()
+    sentiment_list_1 = analyze_sentiment(listed_review_1)
+    sentiment_list_2 = analyze_sentiment(listed_review_2)
+    sentiment_list_3 = analyze_sentiment(listed_review_3)
+
+    sentiment_df_1 = pd.DataFrame(sentiment_list_1, columns = ['sentiment', 'value'])
+    sentiment_df_1['movie_name'] = movie_1_name
+
+    sentiment_df_2 = pd.DataFrame(sentiment_list_2, columns = ['sentiment', 'value'])
+    sentiment_df_2['movie_name'] = movie_2_name
+
+    sentiment_df_3 = pd.DataFrame(sentiment_list_3, columns = ['sentiment', 'value'])
+    sentiment_df_3['movie_name'] = movie_3_name
+
+    intermediate_sentiment_df = sentiment_df_1.append(sentiment_df_2, ignore_index = True)
+    full_sentiment_df = intermediate_sentiment_df.append(sentiment_df_3, ignore_index = True)
+
+    full_sentiment_df_aggregated = full_sentiment_df.groupby(['movie_name', 'sentiment']).mean().reset_index()
+
+    print((ggplot(full_sentiment_df_aggregated, aes(y = 'value', x = 'sentiment', fill = 'sentiment', color = 'sentiment')) # https://plotnine.readthedocs.io/en/stable/
+    + geom_bar(stat = 'identity') 
+    + theme(legend_position = 'bottom', legend_title = element_blank())
+    + scale_y_continuous(minor_breaks = NULL)
+    + labs(x = '', y = '', title = 'Mean Sentiment Value (Y) vs. Sentiment Kind (X) by Sentiment Kind (Colors) and Movie Name (Facets)')
+    + facet_wrap('~movie_name', ncol = 3, scales = 'free_x')))
+
+
+
+if __name__ == "__main__":
+    main()
